@@ -8,8 +8,8 @@ public class GlobalManager : MonoBehaviour
     [field: SerializeField] public NetWorkController networkController {  get; private set; }
     
 
-    public PlayerSpawnerController playerSpawnController { get; set; }
-    public ObjectPollingManager objectPoolingManager { get; set; }
+    //public PlayerSpawnerController playerSpawnController { get; set; }
+    //public ObjectPollingManager objectPoolingManager { get; set; }
     //DontDestroyOnLoad 중복을 제거하는 코드 
     private void Awake()
     {

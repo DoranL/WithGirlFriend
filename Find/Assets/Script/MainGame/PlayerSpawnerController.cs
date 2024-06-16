@@ -10,9 +10,6 @@ public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerL
     [SerializeField] private NetworkPrefabRef playerNetworkPrefab = NetworkPrefabRef.Empty;
     [SerializeField] public Transform[] spawnPoints;
 
-    //List<NetWorkController> playerPrefab = new List<NetWorkController>();
-    //bool isBotsSpawned = false;
-
     public override void Spawned()
     {
         if(Runner.IsServer)
@@ -42,7 +39,7 @@ public class PlayerSpawnerController : NetworkBehaviour, IPlayerJoined, IPlayerL
 
     private void SpawnPlayer(PlayerRef playerRef)
     {
-        if (Runner.IsServer && HasStateAuthority)
+        if (Runner.IsServer)
         {
             var index = playerRef % spawnPoints.Length; 
             var spawnPoint = spawnPoints[index].transform.position;

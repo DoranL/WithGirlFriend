@@ -1755,6 +1755,7 @@ MonoBehaviour:
   - {fileID: 7783571701857450044}
   - {fileID: 8114572535359449609}
   - {fileID: -1538723268140198737}
+  - {fileID: 8012960052936604470}
   SimulationBehaviours: []
 --- !u!54 &-1318551346925087635
 Rigidbody:
@@ -1828,6 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09771b455a1f6148acad1ba51e5ddbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   animator: {fileID: 4311578988147476922}
   controller: {fileID: 403539285186895371}
 --- !u!1 &4311578988232985971

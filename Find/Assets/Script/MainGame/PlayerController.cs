@@ -39,6 +39,15 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
     private Vector3 moveDir;
     private float yRotate;
 
+    private enum InputButtons
+    {
+        forward = 0,
+        back = 1,
+        right = 2,
+        left = 3,
+        jump = 4,
+    }
+
     private float yaw;
     public float Yaw
     {
@@ -110,17 +119,19 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
 
     public override void Spawned()
     {
-        if(!HasInputAuthority)
-        {
-            Destroy(cam.gameObject);
-            return;
-        }
+        //if (!HasInputAuthority)
+        //{
+        //    Destroy(cam.gameObject);
+        //    return;
+        //}
 
-        if(HasStateAuthority)
+        if (HasStateAuthority)
         {
             rigid = GetComponent<Rigidbody>();
             playerMovementController = GetComponent<PlayerMovementController>();
         }
+        //rigid = GetComponent<Rigidbody>();
+        //playerMovementController = GetComponent<PlayerMovementController>();
         SetLocalObjects();
     }
 
@@ -156,46 +167,64 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
             transform.position = pos;
             pos += Vector3.down * gMoon * Time.deltaTime;
 
-            InputMovement(input);
         }
+        InputMovement(input);
     }
 
     public override void Render()
     {
-        if(!Object.HasInputAuthority)
+        if (!Object.HasInputAuthority)
         {
             return;
         }
-
-        playerMovementController.RenderVisual(rigid.velocity);
+        if(playerMovementController != null)
+        {
+            playerMovementController.RenderVisual(rigid.velocity);
+        }
     }
     private void InputMovement(PlayerData input)
     {
+        //if (!Object.HasInputAuthority)
+        //{
+        //    return;
+        //}
         buttonsPrev = default;
-
+        if (input.Equals(null))
+        {
+            return;
+        }
         var pressed = input.NetworkButtons.GetPressed(buttonsPrev);
-        var released = input.NetworkButtons.GetReleased(buttonsPrev);
 
         moveDir = Vector3.zero;
 
+        //if(pressed.WasPressed(buttonsPrev, InputButtons.forward))
+        //{
+        //    moveDir = rigid.transform.forward;
+        //    rigid.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
+        //}
+
+        //if(pressed.WasPressed(buttonsPrev, InputButtons.left))
+        //{
+        //    yRotate -= 300f * Time.deltaTime;
+        //    Quaternion newRotation = Quaternion.Euler(0, yRotate, 0);
+
+        //    rigid.MoveRotation(newRotation);
+        //}
         if (input.NetworkButtons.WasPressed(buttonsPrev, InputButtons.forward))
         {
             moveDir = rigid.transform.forward;
             rigid.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
-            //moveDir += Vector3.forward;
-
-            //inputDir += Vector2.up;
         }
 
         if (input.NetworkButtons.WasPressed(buttonsPrev, InputButtons.back))
         {
-           // moveDir += Vector3.back;
+            // moveDir += Vector3.back;
             //inputDir -= Vector2.up;
         }
 
         if (input.NetworkButtons.WasPressed(buttonsPrev, InputButtons.right))
         {
-            yRotate += 300f * Time.deltaTime;
+            yRotate += (300f * Time.deltaTime);
             Quaternion newRotation = Quaternion.Euler(0, yRotate, 0);
 
             rigid.MoveRotation(newRotation);
@@ -210,11 +239,6 @@ public class PlayerController : NetworkBehaviour, IBeforeUpdate
         }
 
         buttonsPrev = input.NetworkButtons;
-    }
-    public override void Despawned(NetworkRunner runner, bool hasState)
-    {
-       //GlobalManager.Instance.objectPoolingManager.RemoveNetworkObjectDic(Object);
-       Destroy(gameObject);
     }
 
     public PlayerData GetPlayerNetworkInput()

@@ -9,67 +9,11 @@ public class LocallInputPollar : NetworkBehaviour, INetworkRunnerCallbacks
 {
     [SerializeField] private PlayerController player;
 
-    public static LocallInputPollar inputPollar;
-
     private NetworkRunner runner;
 
     //public List<Player> runningPlayers = new List<Player>();
 
     public NetworkPrefabRef playerPrefab;
-
-    //private float yaw;
-    //public float Yaw
-    //{
-    //    get
-    //    {
-    //        return yaw;
-    //    }
-    //    set
-    //    {
-    //        yaw = value;
-    //        if (yaw > 0)
-    //        {
-    //            yaw = 0;
-    //        }
-    //        if (yaw < 0)
-    //        {
-    //            yaw = 360f;
-    //        }
-    //    }
-    //}
-
-    //private float pitch;
-    //public float Pitch
-    //{
-    //    get
-    //    {
-    //        return pitch;
-    //    }
-    //    set
-    //    {
-    //        pitch = value;
-
-    //        pitch = Mathf.Clamp(pitch, -80, 80);
-    //    }
-    //}
-
-    private void Awake()
-    {
-        if (inputPollar == null)
-        {
-            inputPollar = this;
-        }
-        else if (inputPollar != this)
-        {
-            Destroy(gameObject); 
-        }
-    }
-
-    //void Update()
-    //{
-    //    yaw += Input.GetAxis("Mouse X");
-    //    pitch -= Input.GetAxis("Mouse Y");
-    //}
 
     public override void Spawned()
     {
@@ -112,33 +56,18 @@ public class LocallInputPollar : NetworkBehaviour, INetworkRunnerCallbacks
     {
         if (runner != null && runner.IsRunning)
         {
-
             var data = player.GetPlayerNetworkInput();
-            
-            //var dataInput = new PlayerData();
 
-            //dataInput.buttons.Set(InputButtons.forward, Input.GetKey(KeyCode.W));
-            //dataInput.buttons.Set(InputButtons.back, Input.GetKey(KeyCode.S));
-            //dataInput.buttons.Set(InputButtons.right, Input.GetKey(KeyCode.D));
-            //dataInput.buttons.Set(InputButtons.left, Input.GetKey(KeyCode.A));
-            //dataInput.buttons.Set(InputButtons.jump, Input.GetKey(KeyCode.Space));
-
-            //dataInput.pitch = pitch;
-            //dataInput.yaw = yaw;
-
-            //input.Set(dataInput);
             input.Set(data);
         }
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        //runningPlayers.Add(new Player(player, null));
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        //runningPlayers.Remove(new Player(player, null));
     }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data)
@@ -151,17 +80,6 @@ public class LocallInputPollar : NetworkBehaviour, INetworkRunnerCallbacks
         {
             return;
         }
-
-        //foreach (var player in runningPlayers)
-        //{
-        //    var obj = runner.Spawn(playerPrefab, Vector3.zero, Quaternion.identity, player.playerRef);
-
-        //    var controller = obj.GetComponent<CharacterController>();
-
-        //    controller.enabled = false;
-        //    obj.transform.position = new Vector3(0, 10, 0);
-        //    controller.enabled = true;
-        //}
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)
